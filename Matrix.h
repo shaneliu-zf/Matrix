@@ -1,7 +1,7 @@
-#include<iostream>
-#include<iomanip>
-#include<cmath>
-#include<vector>
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <vector>
 #include <cassert>
 
 class Matrix:std::vector<std::vector<double>>{
@@ -31,6 +31,7 @@ public:
 	}
 	int row()const{return size();}
 	int column()const{return at(0).size();}
+	bool isSqure(){return row()==column();}
 	void operator+=(Matrix other){*this=*this+other;}
 	void operator-=(Matrix other){*this=*this-other;}
 	void operator*=(Matrix other){*this=*this*other;}
@@ -137,11 +138,13 @@ public:
 		return ans;
 	}
 	friend Matrix inverse(Matrix a){
+		assert(a.isSqure());
 		double d=det(a);
 		assert(d);
 		return (1/d)*adj(a);
 	}
 	friend double det(Matrix a){
+		assert(a.isSqure());
 		double ans=0;
 		if(a.row()==1)ans=a[0][0];
 		else for(int i=0;i<a.column();i++){
@@ -150,7 +153,7 @@ public:
 		return ans;
 	}
 	friend Matrix cof(Matrix a,int x,int y){
-		assert(a.row()==a.column());
+		assert(a.isSqure());
 		std::vector<std::vector<double>>c;
 		c.resize(a.row()-1);
 		int q=0,w=0;
@@ -169,7 +172,7 @@ public:
 		return ans;
 	}
 	friend Matrix adj(Matrix a){
-		assert(a.row()==a.column());
+		assert(a.isSqure());
 		std::vector<std::vector<double>>c;
 		c.resize(a.row());
 		for(int i=0;i<a.row();i++){
@@ -182,16 +185,3 @@ public:
 		return T(ans);
 	}
 };
-
-using namespace std;
-
-int main(){
-	int n,m;
-	cin>>n>>m;
-	Matrix a(n,m);
-	Matrix b(n,m);
-	cin>>a>>b;
-	a+=b;
-	a.print();
-	return 0;
-}
