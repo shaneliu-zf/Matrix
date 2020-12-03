@@ -120,6 +120,7 @@ public:
 		return ans;
 	}
 	friend Matrix operator^(Matrix a,int t){
+		if(t==-1)return inverse(a);
 		assert(t>0);
 		Matrix b=a;
 		while(--t)b=b*a;
